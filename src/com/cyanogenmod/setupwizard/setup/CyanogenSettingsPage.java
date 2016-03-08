@@ -54,12 +54,10 @@ public class CyanogenSettingsPage extends SetupPage {
 
     public static final String TAG = "CyanogenSettingsPage";
 
-    public static final String KEY_SEND_METRICS = "send_metrics";
     public static final String DISABLE_NAV_KEYS = "disable_nav_keys";
     public static final String KEY_APPLY_DEFAULT_THEME = "apply_default_theme";
     public static final String KEY_BUTTON_BACKLIGHT = "pre_navbar_button_backlight";
-
-    public static final String PRIVACY_POLICY_URI = "https://cyngn.com/oobe-legal?hideHeader=1";
+    public static final String VU_COMMUNITY_URI = "https://plus.google.com/communities/113421451898131433024";
 
     public CyanogenSettingsPage(Context context, SetupDataCallbacks callbacks) {
         super(context, callbacks);
@@ -85,7 +83,7 @@ public class CyanogenSettingsPage extends SetupPage {
 
     @Override
     public int getTitleResId() {
-        return R.string.setup_services;
+        return R.string.setup_vu_services;
     }
 
     private static void writeDisableNavkeysOption(Context context, boolean enabled) {
@@ -124,18 +122,8 @@ public class CyanogenSettingsPage extends SetupPage {
                 }
             }
         });
-        handleEnableMetrics();
         handleDefaultThemeSetup();
-    }
-
-    private void handleEnableMetrics() {
-        Bundle privacyData = getData();
-        if (privacyData != null
-                && privacyData.containsKey(KEY_SEND_METRICS)) {
-            CMSettings.Secure.putInt(mContext.getContentResolver(),
-                    CMSettings.Secure.STATS_COLLECTION, privacyData.getBoolean(KEY_SEND_METRICS)
-                            ? 1 : 0);
-        }
+       }
     }
 
     private void handleDefaultThemeSetup() {
@@ -176,25 +164,14 @@ public class CyanogenSettingsPage extends SetupPage {
         private View mKillSwitchView;
         private TextView mKillSwitchTitle;
         private ImageView mKillSwitchStatus;
-        private View mMetricsRow;
         private View mDefaultThemeRow;
         private View mNavKeysRow;
-        private CheckBox mMetrics;
         private CheckBox mDefaultTheme;
         private CheckBox mNavKeys;
 
         private boolean mHideNavKeysRow = false;
         private boolean mHideThemeRow = false;
 
-
-        private View.OnClickListener mMetricsClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean checked = !mMetrics.isChecked();
-                mMetrics.setChecked(checked);
-                mPage.getData().putBoolean(KEY_SEND_METRICS, checked);
-            }
-        };
 
         private View.OnClickListener mDefaultThemeClickListener = new View.OnClickListener() {
             @Override
@@ -216,14 +193,14 @@ public class CyanogenSettingsPage extends SetupPage {
 
         @Override
         protected void initializePage() {
-            String privacy_policy = getString(R.string.services_privacy_policy);
-            String policySummary = getString(R.string.services_explanation, privacy_policy);
-            SpannableString ss = new SpannableString(policySummary);
+            String vu_com = getString(R.string.vu_com);
+            String VUSummary = getString(R.string.abtvu, vu_com);
+            SpannableString ss = new SpannableString(VUSummary);
             ClickableSpan clickableSpan = new ClickableSpan() {
                 @Override
                 public void onClick(View textView) {
                     final Intent intent = new Intent(SetupWizardApp.ACTION_VIEW_LEGAL);
-                    intent.setData(Uri.parse(PRIVACY_POLICY_URI));
+                    intent.setData(Uri.parse(VU_COMMUNITY_URI));
                     try {
                         getActivity().startActivity(intent);
                     } catch (Exception e) {
@@ -232,9 +209,9 @@ public class CyanogenSettingsPage extends SetupPage {
                 }
             };
             ss.setSpan(clickableSpan,
-                    policySummary.length() - privacy_policy.length() - 1,
-                    policySummary.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            TextView privacyPolicy = (TextView) mRootView.findViewById(R.id.privacy_policy);
+                    VUSummary.length() - vu_com.length() - 1,
+                    VUSummary.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            TextView privacyPolicy = (TextView) mRootView.findViewById(R.id.vu_com);
             privacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
             privacyPolicy.setText(ss);
 
@@ -252,19 +229,6 @@ public class CyanogenSettingsPage extends SetupPage {
                     mKillSwitchStatus.setImageResource(R.drawable.cross);
                 }
             }
-
-            mMetricsRow = mRootView.findViewById(R.id.metrics);
-            mMetricsRow.setOnClickListener(mMetricsClickListener);
-            String metricsHelpImproveCM =
-                    getString(R.string.services_help_improve_cm, getString(R.string.os_name));
-            String metricsSummary = getString(R.string.services_metrics_label,
-                    metricsHelpImproveCM, getString(R.string.os_name));
-            final SpannableStringBuilder metricsSpan = new SpannableStringBuilder(metricsSummary);
-            metricsSpan.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
-                    0, metricsHelpImproveCM.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            TextView metrics = (TextView) mRootView.findViewById(R.id.enable_metrics_summary);
-            metrics.setText(metricsSpan);
-            mMetrics = (CheckBox) mRootView.findViewById(R.id.enable_metrics_checkbox);
 
             mDefaultThemeRow = mRootView.findViewById(R.id.theme);
             mHideThemeRow = hideThemeSwitch(getActivity());
@@ -314,17 +278,7 @@ public class CyanogenSettingsPage extends SetupPage {
         public void onResume() {
             super.onResume();
             updateDisableNavkeysOption();
-            updateMetricsOption();
             updateThemeOption();
-        }
-
-        private void updateMetricsOption() {
-            final Bundle myPageBundle = mPage.getData();
-            boolean metricsChecked =
-                    !myPageBundle.containsKey(KEY_SEND_METRICS) || myPageBundle
-                            .getBoolean(KEY_SEND_METRICS);
-            mMetrics.setChecked(metricsChecked);
-            myPageBundle.putBoolean(KEY_SEND_METRICS, metricsChecked);
         }
 
         private void updateThemeOption() {
