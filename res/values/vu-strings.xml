@@ -5,6 +5,5 @@
 <string name="abtvu" product="tablet">Your tablet is almost ready to enjoy VanillaOS. Our CyanogenMod based open source project strives to perform fast and user friendly with a lot of custom options added. Big thank you to every Rom we got code from such as Paranoid Android, AOKP or SlimRoms for example. If you are facing any issue, feel free to contact us on our g+ community :)   <xliff:g id="name" example="VanillaUnicorn community">%s</xliff:g>.</string>
 <string name="abtvu" product="default"> Your phone is almost ready to enjoy VanillaOS. Our CyanogenMod based open source project strives to perform fast and user friendly with a lot of custom options added. Big thank you to every Rom we got code from such as Paranoid Android, AOKP or SlimRoms for example. If you are facing any issue, feel free to contact us on our g+ community :)   <xliff:g id="name" example="VanillaUnicorn community">%s</xliff:g>.</string>
 <string name="vu_com">Join our community on g+</string>
-#<string name="vu_bugrep">Feel free to use our app to report and follow up on the status of occured bugs in our System</string>
-# Commenting this out for now, will follow 
+
 </resources>
