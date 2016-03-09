@@ -124,7 +124,6 @@ public class CyanogenSettingsPage extends SetupPage {
         });
         handleDefaultThemeSetup();
        }
-    }
 
     private void handleDefaultThemeSetup() {
         Bundle privacyData = getData();
