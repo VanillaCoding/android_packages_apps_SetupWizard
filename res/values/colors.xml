@@ -19,9 +19,9 @@
     <color name="white">#ffffff</color>
     <color name="page_background">#ffffff</color>
 
-    <color name="primary">#e300e5</color>
-    <color name="primary_dark">#e300e5</color>
-    <color name="accent">#7f0097</color>
+    <color name="primary">#950195</color>
+    <color name="primary_dark">#950195</color>
+    <color name="accent">#32003c</color>
     <color name="primary_text">#8a000000</color>
     <color name="secondary_text">#727272</color>
     <color name="button_bar_text_enabled">#ff1e1e1e</color>
